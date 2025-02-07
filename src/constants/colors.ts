@@ -1,0 +1,17 @@
+export const COLOR = {
+  primary: '#3D4A7A',
+  ghost: 'rgba(255, 255, 255, 0.4)',
+  gray: 'rgb(188, 189, 189)',
+  offwhite: 'rgb(243, 246, 246)',
+  black: 'rgb(0, 14, 8)',
+  blue: 'rgba(53, 40, 105, 1)',
+  light_blue: 'rgba(61, 74, 122, 1)',
+  bluish_white: 'rgb(242, 247, 251)',
+  red: 'rgb(234, 55, 54)',
+  light_red: 'rgb(255, 45, 27)',
+  dark_gray: 'rgb(187, 191, 189)',
+  light_grey: 'rgb(214, 215, 215)',
+  green: 'rgb(43, 239, 131)',
+  white: 'rgb(251, 250, 250)',
+  pure_gray: 'gray',
+};
