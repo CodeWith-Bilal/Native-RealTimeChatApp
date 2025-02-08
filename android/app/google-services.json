@@ -12,7 +12,20 @@
           "package_name": "com.tchat"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "596416153447-61ac16nl3lkbfo6dosclbj326libsdgg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tchat",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "596416153447-nuer7khtjfs24pjp5grhubkgs0p4it57.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBotNMDQAo5VBHzwPrI6oRXxxZXOsGWar8"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596416153447-nuer7khtjfs24pjp5grhubkgs0p4it57.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

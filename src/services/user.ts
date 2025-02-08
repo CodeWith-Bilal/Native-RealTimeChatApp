@@ -1,9 +1,8 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import {User} from '../types/firestoreService';
+import { User } from '../types/firestoreService';
 import auth from '@react-native-firebase/auth';
-import {getUserFromStorage} from './async_storage';
 
 export const fetchUsers = async (userId?: string): Promise<User[]> => {
   let query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> =
@@ -27,7 +26,7 @@ export const fetchUsers = async (userId?: string): Promise<User[]> => {
   }) as User[];
 };
 
-export const listenToUsers = (currentUserId: string,callback: (users: User[]) => void) => {
+export const listenToUsers = (currentUserId: string, callback: (users: User[]) => void) => {
   return firestore()
     .collection('users')
     .onSnapshot(
@@ -42,21 +41,19 @@ export const listenToUsers = (currentUserId: string,callback: (users: User[]) =>
             description: data.description || '',
             status: data.status || null,
           };
-        })
-        .filter(user => user.uid !== currentUserId);;
+        }).filter(user => user.uid !== currentUserId);
 
         callback(users);
       },
-      error => {
+      (error: Error) => { // Explicitly define the type of error
         console.error('Error listening to users:', error);
         callback([]);
       }
     );
 };
 
-
 export const createUser = async (uid: string, userData: Partial<User>) => {
-  await firestore().collection('users').doc(uid).set(userData, {merge: true});
+  await firestore().collection('users').doc(uid).set(userData, { merge: true });
 };
 
 export const fetchUser = async (uid: string) => {
@@ -90,14 +87,16 @@ export const updateUserProfile = async ({
 };
 
 export const getCurrentUserProfile = async () => {
-  try {
-    const user = await getUserFromStorage();
-    if (!user) {
-      console.log('No user profile found in storage.');
-    }
-    return user;
-  } catch (error) {
-    console.error('Failed to get user profile from storage:', error);
-    throw error;
-  }
+  return new Promise<User | null>((resolve) => {
+    const unsubscribe = auth().onAuthStateChanged(async (user) => {
+      unsubscribe(); // Unsubscribe after getting the user
+      if (user) {
+        const userDoc = await fetchUser(user.uid);
+        resolve(userDoc as User | null);
+      } else {
+        console.log('No user is currently signed in.');
+        resolve(null);
+      }
+    });
+  });
 };

@@ -6,7 +6,7 @@ import {
   fetchChats,
   createNewChat,
   deleteChat,
-} from '../../services/chats';
+} from '../../hooks/useChat';
 import {Chat, Message} from '../../types/firestoreService';
 import {Timestamp} from '@react-native-firebase/firestore';
 

@@ -4,14 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/navigation';
 import { listenToUsers } from '../services/user';
 import { observeAuthState } from '../services/auth';
-import { fetchContactsThunk } from '../store/slices/contacts.slice';
+import { fetchContactsThunk } from '../store/slices/contactSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { setUser, UserState } from '../store/slices/user.slice';
 
 const useNavigationHook = () => {
   const navigation = useNavigation<BottomTabNavigationProp<RootStackParamList>>();
   const user = useAppSelector(state => state.user);
-  const { users: usersInStore } = useAppSelector(state => state.users);
+  const { contacts: usersInStore } = useAppSelector(state => state.contacts);
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const [userLoader, setUserLoader] = useState(false);
   const dispatch = useAppDispatch();

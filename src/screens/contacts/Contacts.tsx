@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import ContentViewer from '../../components/ContentViewer';
-import useContacts from './useContacts';
+import useContacts from '../../hooks/useContacts';
 import Contacts from '../../components/ContactsList';
 import Loader from '../../components/loader/Loader';
 import {useAppSelector} from '../../store/store';

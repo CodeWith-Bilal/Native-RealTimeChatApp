@@ -33,25 +33,25 @@ const useChat = () => {
       console.error('Error handling camera:', error);
     }
   };
-  
-  const handleSelectImages = async (chatId: string, senderId: string) => {
+
+const handleSelectImages = async (chatId: string, senderId: string) => {
     try {
       const response = await launchImageLibrary({
         mediaType: 'photo',
         quality: 1,
         includeBase64: true,
       });
-      
+
       if (response.didCancel) {
         console.log('User canceled image picker');
         return;
       }
-      
+
       if (response.errorCode) {
         console.error('Image Picker Error:', response.errorMessage);
         return;
       }
-      
+
       const base64Image = response.assets?.[0]?.base64;
       console.log('base64Image => ', base64Image);
       if (base64Image) {
@@ -82,9 +82,9 @@ const useChat = () => {
         status: {sender: 'sent', receiver: 'unread'},
       };
 
-      
+
       await messageRef.set(messageData);
-      
+
       await chatRef.set(
         {
           lastMessage: '📸 Image',

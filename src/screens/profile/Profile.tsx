@@ -86,13 +86,12 @@ const Profile: React.FC = () => {
               onLoadText="Updating...">
               Update Profile
             </ActionButton>
-
             <ActionButton
               onClick={handleLogout}
-              color="tomato"
+              color="#3D4A7A"
               loader={logoutLoader}
-              onLoadText="Logging out...">
-              Logout
+              onLoadText="Updating...">
+              Log out
             </ActionButton>
           </View>
         </ScrollView>

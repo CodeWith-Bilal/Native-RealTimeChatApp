@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {createNewChat} from '../services/chats';
+import {createNewChat} from '../hooks/useChat';
 import {userProfile} from '../types/profile';
 import useAuth from './useAuth';
 import appNavigate from './useNavigationHook';

@@ -1,8 +1,7 @@
 import React from 'react';
-import {View, Text, TextInput} from 'react-native';
-import {InputFieldProps} from '../types/inputField';
-import {COLOR} from '../constants/colors';
-import useInputValidation from '../hooks/useInputValidation';
+import { View, Text, TextInput } from 'react-native';
+import { InputFieldProps } from '../types/inputField';
+import { COLOR } from '../constants/colors';
 
 function InputField({
   placeholder,
@@ -11,20 +10,12 @@ function InputField({
   secureTextEntry = false,
   setVal,
   val,
-  setError,
 }: InputFieldProps) {
-  const {isError, handleChange} = useInputValidation(
-    title,
-    type,
-    setVal,
-    setError,
-  );
-
   return (
     <View>
       <Text
         style={{
-          color: isError ? COLOR.red : COLOR.primary,
+          color: COLOR.primary,
           fontWeight: '500',
           fontSize: 16,
         }}>
@@ -34,7 +25,7 @@ function InputField({
         style={{
           height: 38,
           borderBottomWidth: 1,
-          borderBottomColor: isError ? COLOR.light_red : COLOR.light_grey,
+          borderBottomColor: COLOR.light_grey,
           paddingInlineStart: 0,
           color: COLOR.black,
         }}
@@ -42,22 +33,10 @@ function InputField({
         placeholderTextColor={COLOR.gray}
         value={val}
         secureTextEntry={secureTextEntry}
-        onChangeText={text => handleChange(text)}
+        onChangeText={text => setVal(text)} // Directly set the value
         keyboardType={type}
         autoCapitalize="none"
       />
-      {isError && (
-        <Text
-          style={{
-            color: COLOR.red,
-            fontSize: 12,
-            fontWeight: '300',
-            marginTop: 2,
-            textAlign: 'right',
-          }}>
-          {isError}
-        </Text>
-      )}
     </View>
   );
 }
