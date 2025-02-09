@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import IconButton from '../../../components/IconButton';
 import RulerText from '../../../components/RulerText';
@@ -9,11 +9,13 @@ import AuthHeaderSection from '../../../components/AuthSectionHeader';
 import Images from '../../../constants/imgs';
 import {COLOR} from '../../../constants/colors';
 import Loader from '../../../components/loader/Loader';
-import useSignup from './useSignup';
+import useAuthFunctionality from '../../../hooks/useAuthFunctionality';
+// import useSignup from './useSignup';
+// import useAuthFunctionality from '../../../hooks/useAuthService';
 
 const SignIn: React.FC = () => {
-  const {userData, handleInputChange, SignUphandler, loading, error, setError} =
-    useSignup();
+  const {userData, handleSignUpInputChange, signUpHandler, loading, error, setError} =
+    useAuthFunctionality();
 
   return (
     <>
@@ -46,7 +48,7 @@ const SignIn: React.FC = () => {
           <View style={{gap: 25}}>
             <InputField
               val={userData.name}
-              setVal={value => handleInputChange('name', value)}
+              setVal={value => handleSignUpInputChange('name', value)}
               title="Enter Name"
               type="default"
               placeholder="Jhon Doe"
@@ -54,7 +56,7 @@ const SignIn: React.FC = () => {
             />
             <InputField
               val={userData.email}
-              setVal={value => handleInputChange('email', value)}
+              setVal={value => handleSignUpInputChange('email', value)}
               title="Enter Email"
               type="email-address"
               placeholder="i.e. Jhon@gmail.com"
@@ -63,7 +65,7 @@ const SignIn: React.FC = () => {
 
             <InputField
               val={userData.password}
-              setVal={value => handleInputChange('password', value)}
+              setVal={value => handleSignUpInputChange('password', value)}
               placeholder="Enter your password"
               title="Password"
               type="default"
@@ -73,7 +75,7 @@ const SignIn: React.FC = () => {
 
             <InputField
               val={userData.confirmPassword}
-              setVal={value => handleInputChange('confirmPassword', value)}
+              setVal={value => handleSignUpInputChange('confirmPassword', value)}
               title="Confirm Password"
               type="default"
               secureTextEntry={true}
@@ -85,7 +87,7 @@ const SignIn: React.FC = () => {
 
         <View style={{flex: 2, marginTop: 20, paddingVertical: 10}}>
           <ActionButton
-            onClick={SignUphandler}
+            onClick={signUpHandler}
             loader={loading}
             error={error}
             onLoadText="Adding yourself...">

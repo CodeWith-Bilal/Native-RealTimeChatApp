@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
-import {fetchUsers} from '../../services/user';
+import {fetchUsers} from '../../hooks/useUser';
 import {User} from '../../types/firestoreService';
 
 interface UsersState {

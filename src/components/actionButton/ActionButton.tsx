@@ -19,7 +19,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       start={{x: 0, y: 1}}
       end={{x: 1, y: 1}}
       style={{
-        padding: 14,
+        padding: 8,
         borderRadius: 16,
       }}
       colors={['#010102', '#192f6a', '#3b5998']}>
@@ -34,7 +34,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   ) : (
     <View
       style={{
-        padding: 14,
+        padding: 1,
         borderRadius: 16,
         backgroundColor: color,
       }}>

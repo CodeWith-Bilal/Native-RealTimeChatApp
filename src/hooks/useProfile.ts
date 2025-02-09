@@ -1,10 +1,10 @@
 import {useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {useAppDispatch, useAppSelector} from '../../store/store';
-import {showToast} from '../../components/Toast';
-import {logoutUser} from '../../services/auth';
-import {clearUser, setLoading, setUser} from '../../store/slices/user.slice';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {ToastAndroid} from 'react-native';
+import {logoutUser} from './useAuthService';
+import {clearUser, setLoading, setUser} from '../store/slices/userSlice';
 
 const appProfile = () => {
   const {isLoading, ...user} = useAppSelector(state => state.user);
@@ -23,6 +23,10 @@ const appProfile = () => {
     setUserData(prevState => ({...prevState, [field]: value}));
   };
 
+  const showToast = (message: string) => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
+
   const handlePickAndUploadImage = async () => {
     try {
       const response = await launchImageLibrary({
@@ -32,18 +36,14 @@ const appProfile = () => {
       });
 
       if (response.didCancel) {
-        console.error('User canceled image picker');
+        showToast('User canceled image picker');
         setLoading(false);
         setUpdateLoader(false);
         return;
       }
 
       if (response.errorCode) {
-        showToast(
-          'Image Picker Error',
-          response.errorMessage || 'Unknown error',
-          'error',
-        );
+        showToast(response.errorMessage || 'Image picker error');
         setLoading(false);
         setUpdateLoader(false);
         return;
@@ -51,7 +51,7 @@ const appProfile = () => {
 
       const imageBase64 = response.assets?.[0].base64;
       if (!imageBase64) {
-        showToast('Error', 'Failed to get image data', 'error');
+        showToast('Failed to get image data');
         setLoading(false);
         setUpdateLoader(false);
         return;
@@ -90,7 +90,7 @@ const appProfile = () => {
       setUpdateLoader(false);
     } catch (error) {
       console.error('Error handling image:', error);
-      showToast('Error', 'Failed to upload image', 'error');
+      showToast('Failed to upload image');
     } finally {
       setLoading(false);
     }
@@ -122,13 +122,11 @@ const appProfile = () => {
           });
       }
 
-      showToast('Success', 'Profile updated successfully', 'success');
+      showToast('Profile updated successfully');
     } catch (error) {
       console.error('Failed to update profile (Profile.tsx):', error);
       showToast(
-        'Failed to update profile',
-        'There are some issue, that your profile is not updated. Please try again later.',
-        'error',
+        'Failed to update profile. Please try again later.',
       );
     } finally {
       setUpdateLoader(false);
@@ -140,9 +138,10 @@ const appProfile = () => {
       setLogoutLoader(true);
       await logoutUser();
       dispatch(clearUser());
+      showToast('Logged out successfully');
     } catch (error) {
       console.error('Failed to logout:', error);
-      showToast('Error', 'Failed to logout', 'error');
+      showToast('Failed to logout');
     } finally {
       setLogoutLoader(false);
     }

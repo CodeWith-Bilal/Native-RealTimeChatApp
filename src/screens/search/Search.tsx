@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {User} from '../../types/firestoreService';
 import SearchBar from '../../components/SearchBar';
-import useSearch from './useSearch';
+import useSearch from '../../hooks/useSearch';
 import Images from '../../constants/imgs';
 import { COLOR } from '../../constants/colors';
 

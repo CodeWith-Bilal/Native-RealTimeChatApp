@@ -4,8 +4,8 @@ import {FirebaseError} from '@firebase/util';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {UseAuthReturn} from '../types/auth';
 import {useAppDispatch, useAppSelector} from './../store/store';
-import {login, signUp, observeAuthState} from '../services/auth';
-import {setLoading, setUser, UserState} from '../store/slices/user.slice';
+import {login, signUp, observeAuthState} from './useAuthService';
+import {setLoading, setUser, UserState} from '../store/slices/userSlice';
 
 const appAuth = (): UseAuthReturn => {
   const user = useAppSelector(state => state.user);

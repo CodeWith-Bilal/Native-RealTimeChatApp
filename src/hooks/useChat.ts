@@ -1,11 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
 import { useEffect, useState } from 'react';
-import { fetchMessages, listenToMessages, sendMessage } from '../services/messages';
-import { addMessage } from '../store/slices/chats.slice';
+import { fetchMessages, listenToMessages, sendMessage } from './useMessage';
+import { addMessage } from '../store/slices/chatSlice';
 import useAuth from './useAuth';
 import { Message, Chat } from '../types/firestoreService';
 import { useAppDispatch, useAppSelector } from '../store/store';
-import { fetchUser } from '../services/user';
+import { fetchUser } from './useUser';
 // import { fetchUser } from './';
 
 const useChat = (chatId: string, participantUid: string) => {

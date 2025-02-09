@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import InputField from '../../components/InputField';
 import AuthHeaderSection from '../../components/AuthSectionHeader';
 import ActionButton from '../../components/actionButton/ActionButton';
-import useForgetPassword from './useForgetPassword';
+import useForgetPassword from '../../hooks/useForgetPassword';
 
 const ForgetPassword = () => {
   const {email, setEmail, setError, error, handlePasswordReset} =

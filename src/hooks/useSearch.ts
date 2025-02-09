@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { addContact } from '../../hooks/useContacts';
-import { addContact as addContactToStore } from '../../store/slices/contactSlice';
-import { addUserToContact } from '../../store/slices/user.slice';
-import useAuth from '../../hooks/useAuth';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { User } from '../../types/firestoreService';
+import { addContact } from './useContacts';
+import { addContact as addContactToStore } from '../store/slices/contactSlice';
+import { addUserToContact } from '../store/slices/userSlice';
+import useAuth from './useAuth';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { User } from '../types/firestoreService';
 
 const appSearch = () => {
   const [searchText, setSearchText] = useState<string>('');

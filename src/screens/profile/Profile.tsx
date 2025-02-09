@@ -14,7 +14,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import Images from '../../constants/imgs';
 import {COLOR} from '../../constants/colors';
 import LoaderScreen from '../../components/loader/Loader';
-import useProfile from './useProfile';
+import useProfile from '../../hooks/useProfile';
 
 const Profile: React.FC = () => {
   const {
@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
             {error && <Text style={styles.error}>{error}</Text>}
           </KeyboardAvoidingView>
 
-          <View style={{flex: 2, rowGap: 10}}>
+          <View style={{flex: 2, rowGap: 10,width:290,marginHorizontal:20}}>
             <ActionButton
               onClick={handleUpdateProfile}
               color="#3D4A7A"

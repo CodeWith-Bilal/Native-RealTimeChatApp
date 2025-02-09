@@ -14,21 +14,23 @@ import {ScrollView} from 'react-native-gesture-handler';
 import ActionButton from '../../../components/actionButton/ActionButton';
 import {COLOR} from '../../../constants/colors';
 import AuthHeaderSection from '../../../components/AuthSectionHeader';
-import useSign from './useSignIn';
+// import useSign from './useSignIn';
 import Images from '../../../constants/imgs';
 import Loader from '../../../components/loader/Loader';
+import useAuthFunctionality from '../../../hooks/useAuthFunctionality';
+// import useAuthFunctionality from '../../../hooks/useAuthService';
 
 const SignIn: React.FC = () => {
   const {
     signInData,
-    handleInputChange,
+    handleSignInInputChange,
     handleSignIn,
     loading,
     navigation,
     signInWithGoogle,
     error,
     setError,
-  } = useSign();
+  } = useAuthFunctionality();
 
   return (
     <>
@@ -55,7 +57,7 @@ const SignIn: React.FC = () => {
             <View style={{gap: 25}}>
               <InputField
                 val={signInData.email}
-                setVal={value => handleInputChange('email', value)}
+                setVal={value => handleSignInInputChange('email', value)}
                 title="Enter Email"
                 type="email-address"
                 placeholder="i.e. Jhon@gmail.com"
@@ -64,7 +66,7 @@ const SignIn: React.FC = () => {
 
               <InputField
                 val={signInData.password}
-                setVal={value => handleInputChange('password', value)}
+                setVal={value => handleSignInInputChange('password', value)}
                 title="Password"
                 type="default"
                 secureTextEntry={true}

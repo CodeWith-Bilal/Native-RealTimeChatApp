@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/navigation';
-import { listenToUsers } from '../services/user';
-import { observeAuthState } from '../services/auth';
+import { listenToUsers } from './useUser';
+import { observeAuthState } from './useAuthService';
 import { fetchContactsThunk } from '../store/slices/contactSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
-import { setUser, UserState } from '../store/slices/user.slice';
+import { setUser, UserState } from '../store/slices/userSlice';
 
 const useNavigationHook = () => {
   const navigation = useNavigation<BottomTabNavigationProp<RootStackParamList>>();

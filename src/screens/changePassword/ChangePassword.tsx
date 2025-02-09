@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import ContentViewer from '../../components/ContentViewer';
 import ActionButton from '../../components/actionButton/ActionButton';
-import useChangePassword from './useChangePassword';
+import useChangePassword from '../../hooks/useChangePassword';
 import InputField from '../../components/InputField';
 import {COLOR} from '../../constants/colors';
 

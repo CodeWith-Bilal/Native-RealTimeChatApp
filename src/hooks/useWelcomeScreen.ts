@@ -1,4 +1,4 @@
-import useNavigate from '../../hooks/useNavigationHook';
+import useNavigate from './useNavigationHook';
 
 
 const useWelcomeScreen = () => {

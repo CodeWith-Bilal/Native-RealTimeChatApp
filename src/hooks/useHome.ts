@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../../store/store';
-import {fetchChats} from '../../hooks/useChat';
-import {Chat} from '../../types/firestoreService';
-import {setChats} from '../../store/slices/chats.slice';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {fetchChats} from './useChat';
+import {Chat} from '../types/firestoreService';
+import {setChats} from '../store/slices/chatSlice';
 
 const useHome = () => {
   const [chatLoader, setChatLoader] = useState(true);

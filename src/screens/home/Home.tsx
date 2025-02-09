@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-import useHome from './useHome';
+import useHome from '../../hooks/useHome';
 import HomeStyles from '../../styles/home';
 import ContentViewer from '../../components/ContentViewer';
 import RenderChatItem from '../../components/renderChat/RenderChatItem';

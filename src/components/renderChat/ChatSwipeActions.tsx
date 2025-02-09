@@ -4,12 +4,12 @@ import {
   Animated,
   Image,
   StyleSheet,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {useAppDispatch} from '../../store/store';
-import {deleteChatFromFirebase} from '../../store/slices/chats.slice';
-import {showToast} from '../Toast';
+import {deleteChatFromFirebase} from '../../store/slices/chatSlice';
 import {COLOR} from '../../constants/colors';
 import Images from '../../constants/imgs';
 import {ChatItem} from '../../types/chat';
@@ -36,16 +36,18 @@ const ChatSwipeActions: React.FC<ChatSwipeActionsProps> = ({
     setDeleteClicked(true);
 
     try {
-      dispatch(deleteChatFromFirebase(item.id, item.participants));
+      await dispatch(deleteChatFromFirebase(item.id, item.participants));
+      ToastAndroid.show('Chat deleted successfully.', ToastAndroid.SHORT);
     } catch (error) {
       console.error('Failed to delete chat:', error);
+      ToastAndroid.show('Failed to delete chat.', ToastAndroid.SHORT);
     } finally {
       setDeleteClicked(false);
     }
   };
 
   const handleNotiClick = () => {
-    showToast('Notification clicked', 'Chat notification clicked', 'success');
+    ToastAndroid.show('Chat notification clicked.', ToastAndroid.SHORT);
   };
 
   return (

@@ -1,27 +1,26 @@
-import {useState} from 'react';
-import {createNewChat} from '../hooks/useChat';
-import {userProfile} from '../types/profile';
+import { useState } from 'react';
+import { createNewChat } from '../hooks/useChat';
+import { userProfile } from '../types/profile';
 import useAuth from './useAuth';
 import appNavigate from './useNavigationHook';
-import {showToast} from '../components/Toast';
+import { ToastAndroid } from 'react-native';
 
 const useContactHandler = () => {
-  const {navigation} = appNavigate();
+  const { navigation } = appNavigate();
   const [newChatLoader, setNewChatLoader] = useState(false);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
-  const handleContactClick = async (
-    contactId: string,
-    participant: userProfile,
-  ) => {
+  const showToast = (message: string) => {
+    ToastAndroid.show(message, ToastAndroid.LONG);
+  };
+
+  const handleContactClick = async (contactId: string, participant: userProfile) => {
     if (!user?.uid) return;
 
     try {
       setNewChatLoader(true);
       const userChats = user.chats;
-      const existingChat = userChats?.find(chatId =>
-        chatId?.includes(contactId),
-      );
+      const existingChat = userChats?.find(chatId => chatId?.includes(contactId));
 
       if (existingChat) {
         navigation.navigate('Chat', {
@@ -46,14 +45,14 @@ const useContactHandler = () => {
         });
       }
     } catch (error) {
-      showToast('Error', 'An error occurred while starting chat', 'error');
+      showToast('An error occurred while starting the chat.');
       console.error('Error starting or navigating to chat:', error);
     } finally {
       setNewChatLoader(false);
     }
   };
 
-  return {handleContactClick, loader: newChatLoader};
+  return { handleContactClick, loader: newChatLoader };
 };
 
 export default useContactHandler;

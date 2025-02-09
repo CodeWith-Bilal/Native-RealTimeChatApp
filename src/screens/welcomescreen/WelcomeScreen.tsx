@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLOR} from '../../constants/colors';
-import useWelcomeScreen from './useWelcomeScreen';
+import useWelcomeScreen from '../../hooks/useWelcomeScreen';
 import RulerText from '../../components/RulerText';
 import IconButton from '../../components/IconButton';
-import {signInWithGoogle} from '../../services/auth';
+import {signInWithGoogle} from '../../hooks/useAuthService';
 import ActionText from '../../components/ActionText';
 import SimpleText from '../../components/SimpleText';
 import ActionButton from '../../components/actionButton/ActionButton';
