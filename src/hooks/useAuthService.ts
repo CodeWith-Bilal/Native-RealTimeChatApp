@@ -117,7 +117,7 @@ export const signInWithGoogle = async () => {
 
 
 
-// Logout function
+
 export const logoutUser = async () => {
   try {
     const providers = auth().currentUser?.providerData.map(provider => provider.providerId);

@@ -73,7 +73,7 @@ const useAuthFunctionality = () => {
     }
   };
 
-  // Sign-up handler
+  
   const signUpHandler = async () => {
     setLoading(true);
     try {
