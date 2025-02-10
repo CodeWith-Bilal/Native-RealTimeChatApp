@@ -93,16 +93,13 @@ export const signUp = async (email: string, password: string, name: string): Pro
 export const signInWithGoogle = async () => {
   try {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
     await GoogleSignin.signOut();
 
     const signInResponse = await GoogleSignin.signIn();
-    console.log('Sign-in response:', signInResponse); // Log the entire response
-
     const { data } = signInResponse;
-    console.log('ID Token:', data?.idToken); // Log the ID token
 
     if (!data?.idToken) {
-      console.error('ID Token is null. Check Google Cloud Console configuration.');
       throw new Error('Google Sign-In failed: idToken is null.');
     }
 
@@ -112,13 +109,9 @@ export const signInWithGoogle = async () => {
 
     return { uid, email, displayName, photoURL };
   } catch (err) {
-    console.error('Sign-in error:', err); // Log the error for debugging
+    const error = err as FirebaseError;
     ToastAndroid.show('Google login failed. Please try again.', ToastAndroid.LONG);
-    if (err instanceof Error) {
-      throw err.message || 'An unknown error occurred';
-    } else {
-      throw 'An unknown error occurred';
-    }
+    throw error.message || 'An unknown error occurred';
   }
 };
 
