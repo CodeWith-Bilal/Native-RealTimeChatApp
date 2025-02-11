@@ -1,13 +1,13 @@
-import {useState} from 'react';
+import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {useAppDispatch, useAppSelector} from '../store/store';
-import {ToastAndroid} from 'react-native';
-import {logoutUser} from './useAuthService';
-import {clearUser, setLoading, setUser} from '../store/slices/userSlice';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { ToastAndroid } from 'react-native';
+import { logoutUser } from './useAuthService';
+import { clearUser, setLoading, setUser } from '../store/slices/userSlice';
 
-const appProfile = () => {
-  const {isLoading, ...user} = useAppSelector(state => state.user);
+const useProfile = () => {
+  const { isLoading, ...user } = useAppSelector(state => state.user);
   const [userData, setUserData] = useState({
     name: user.displayName || '',
     email: user.email || '',
@@ -19,8 +19,30 @@ const appProfile = () => {
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection('users')
+      .doc(user.uid || '')
+      .onSnapshot(doc => {
+        if (doc.exists) {
+          const userData = doc.data();
+          setUserData({
+            name: userData?.displayName || '',
+            email: userData?.email || '',
+            status: userData?.status || '',
+            imageUri: userData?.photoURL || '',
+          });
+          dispatch(setUser({ ...userData, uid: user.uid || '' }));
+        }
+      }, error => {
+        console.error('Error fetching user data:', error);
+      });
+
+    return () => unsubscribe(); // Cleanup the listener on unmount
+  }, [user.uid, dispatch]);
+
   const handleInputChange = (field: string, value: string | null) => {
-    setUserData(prevState => ({...prevState, [field]: value}));
+    setUserData(prevState => ({ ...prevState, [field]: value }));
   };
 
   const showToast = (message: string) => {
@@ -37,23 +59,17 @@ const appProfile = () => {
 
       if (response.didCancel) {
         showToast('User canceled image picker');
-        setLoading(false);
-        setUpdateLoader(false);
         return;
       }
 
       if (response.errorCode) {
         showToast(response.errorMessage || 'Image picker error');
-        setLoading(false);
-        setUpdateLoader(false);
         return;
       }
 
       const imageBase64 = response.assets?.[0].base64;
       if (!imageBase64) {
         showToast('Failed to get image data');
-        setLoading(false);
-        setUpdateLoader(false);
         return;
       }
 
@@ -69,27 +85,20 @@ const appProfile = () => {
         {
           photoURL: imageDataUri,
         },
-        {merge: true},
+        { merge: true },
       );
 
-      if (user) {
-        const updatedUser = {
-          ...user,
-          photoURL: imageDataUri,
-        };
+      setUserData(prevState => ({
+        ...prevState,
+        imageUri: imageDataUri,
+      }));
 
-        setUserData(prevState => ({
-          ...prevState,
-          imageUri: imageDataUri,
-        }));
-      }
-
-      if (user?.uid) {
-        dispatch(setUser({...user, photoURL: imageDataUri, uid: user.uid}));
+      if (user.uid) {
+        dispatch(setUser({ ...user, photoURL: imageDataUri, uid: user.uid }));
       }
       setUpdateLoader(false);
-    } catch (error) {
-      console.error('Error handling image:', error);
+    } catch (err) {
+      console.error('Error handling image:', err);
       showToast('Failed to upload image');
     } finally {
       setLoading(false);
@@ -102,32 +111,31 @@ const appProfile = () => {
 
     try {
       const userId = user?.uid;
+      if (!userId) {
+        throw new Error('User ID is not available');
+      }
+
+      // Update the Redux store with the new user data
       dispatch(
         setUser({
-          uid: userId || '',
+          uid: userId,
           displayName: userData.name || '',
           email: userData.email || '',
           status: userData.status || '',
         }),
       );
 
-      if (userId) {
-        await firestore()
-          .collection('users')
-          .doc(userId)
-          .update({
-            displayName: userData.name || '',
-            email: userData.email || '',
-            status: userData.status || '',
-          });
-      }
+      // Update Firestore
+      await firestore().collection('users').doc(userId).set({
+        displayName: userData.name || '',
+        email: userData.email || '',
+        status: userData.status || '',
+      }, { merge: true });
 
       showToast('Profile updated successfully');
-    } catch (error) {
-      console.error('Failed to update profile (Profile.tsx):', error);
-      showToast(
-        'Failed to update profile. Please try again later.',
-      );
+    } catch (err) {
+      console.error('Failed to update profile:', err);
+      showToast('Failed to update profile. Please try again later.');
     } finally {
       setUpdateLoader(false);
     }
@@ -139,8 +147,8 @@ const appProfile = () => {
       await logoutUser();
       dispatch(clearUser());
       showToast('Logged out successfully');
-    } catch (error) {
-      console.error('Failed to logout:', error);
+    } catch (err) {
+      console.error('Failed to logout:', err);
       showToast('Failed to logout');
     } finally {
       setLogoutLoader(false);
@@ -159,4 +167,4 @@ const appProfile = () => {
   };
 };
 
-export default appProfile;
+export default useProfile;

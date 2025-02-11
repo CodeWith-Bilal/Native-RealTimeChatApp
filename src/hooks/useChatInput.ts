@@ -3,7 +3,7 @@ import firestore, { Timestamp } from '@react-native-firebase/firestore';
 import { ToastAndroid } from 'react-native';
 import { Message } from '../types/firestoreService';
 
-const useChat = () => {
+const useChatInput = () => {
   const handleCamera = async (chatId: string, senderId: string) => {
     try {
       const response = await launchCamera({
@@ -102,4 +102,4 @@ const handleSelectImages = async (chatId: string, senderId: string) => {
   return {handleCamera, handleSelectImages};
 };
 
-export default useChat;
+export default useChatInput;

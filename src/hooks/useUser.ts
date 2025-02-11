@@ -1,8 +1,8 @@
+import auth from '@react-native-firebase/auth';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { User } from '../types/firestoreService';
-import auth from '@react-native-firebase/auth';
+import {User} from '../types/firestoreService';
 
 export const fetchUsers = async (userId?: string): Promise<User[]> => {
   let query: FirebaseFirestoreTypes.Query<FirebaseFirestoreTypes.DocumentData> =
@@ -26,34 +26,39 @@ export const fetchUsers = async (userId?: string): Promise<User[]> => {
   }) as User[];
 };
 
-export const listenToUsers = (currentUserId: string, callback: (users: User[]) => void) => {
+export const listenToUsers = (
+  currentUserId: string,
+  callback: (users: User[]) => void,
+) => {
   return firestore()
     .collection('users')
     .onSnapshot(
       snapshot => {
-        const users = snapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            uid: doc.id,
-            displayName: data.displayName || '',
-            email: data.email || '',
-            photoURL: data.photoURL || null,
-            description: data.description || '',
-            status: data.status || null,
-          };
-        }).filter(user => user.uid !== currentUserId);
+        const users = snapshot.docs
+          .map(doc => {
+            const data = doc.data();
+            return {
+              uid: doc.id,
+              displayName: data.displayName || '',
+              email: data.email || '',
+              photoURL: data.photoURL || null,
+              description: data.description || '',
+              status: data.status || null,
+            };
+          })
+          .filter(user => user.uid !== currentUserId);
 
         callback(users);
       },
-      (error: Error) => { // Explicitly define the type of error
+      error => {
         console.error('Error listening to users:', error);
         callback([]);
-      }
+      },
     );
 };
 
 export const createUser = async (uid: string, userData: Partial<User>) => {
-  await firestore().collection('users').doc(uid).set(userData, { merge: true });
+  await firestore().collection('users').doc(uid).set(userData, {merge: true});
 };
 
 export const fetchUser = async (uid: string) => {
@@ -70,7 +75,9 @@ export const updateUserProfile = async ({
 }) => {
   const currentUser = auth().currentUser;
 
-  if (!currentUser) throw new Error('User is not authenticated');
+  if (!currentUser) {
+    throw new Error('User is not authenticated');
+  }
 
   await currentUser.updateProfile({
     displayName: name,
@@ -87,16 +94,16 @@ export const updateUserProfile = async ({
 };
 
 export const getCurrentUserProfile = async () => {
-  return new Promise<User | null>((resolve) => {
-    const unsubscribe = auth().onAuthStateChanged(async (user) => {
-      unsubscribe(); // Unsubscribe after getting the user
-      if (user) {
-        const userDoc = await fetchUser(user.uid);
-        resolve(userDoc as User | null);
-      } else {
-        console.log('No user is currently signed in.');
-        resolve(null);
-      }
-    });
-  });
+  try {
+    const user = auth().currentUser;
+
+    if (user) {
+      return user;
+    } else {
+      throw new Error('No user is currently signed in.');
+    }
+  } catch (error) {
+    console.error('Failed to get user profile from Firebase:', error);
+    throw error;
+  }
 };

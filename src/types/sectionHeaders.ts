@@ -5,5 +5,6 @@ export type AuthHeaderSectionProps = {
   subText: string;
   styleTitle?: TextStyle;
   styleSubTitle?: TextStyle;
+  style?: TextStyle;
 };
 

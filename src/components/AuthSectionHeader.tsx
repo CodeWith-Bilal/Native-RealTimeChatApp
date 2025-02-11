@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 'auto',
+    paddingTop: 40,
   },
   title: {
     color: COLOR.blue,

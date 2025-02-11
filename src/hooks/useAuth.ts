@@ -1,51 +1,52 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
-import {FirebaseError} from '@firebase/util';
-import {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import {UseAuthReturn} from '../types/auth';
-import {useAppDispatch, useAppSelector} from './../store/store';
-import {login, signUp, observeAuthState} from './useAuthService';
-import {setLoading, setUser, UserState} from '../store/slices/userSlice';
-
-const appAuth = (): UseAuthReturn => {
+import { FirebaseError } from '@firebase/util';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { UseAuthReturn } from '../types/auth';
+import { useAppDispatch, useAppSelector } from './../store/store';
+import { login, signUp } from './useAuthService';
+import { setLoading, setUser, UserState } from '../store/slices/userSlice';
+import auth from '@react-native-firebase/auth';
+const useAuth = (): UseAuthReturn => {
   const user = useAppSelector(state => state.user);
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const loading = user.isLoading;
 
   useEffect(() => {
-    const unsubscribe = observeAuthState(currentUser => {
-      if (currentUser)
-        dispatch(setUser(currentUser as Partial<UserState> & {uid: string}));
+    const unsubscribe = auth().onAuthStateChanged(currentUser => {
+      if (currentUser) {
+        const userData: Partial<UserState> & { uid: string } = {
+          uid: currentUser.uid,
+          displayName: currentUser.displayName || null,
+          email: currentUser.email || null,
+          photoURL: currentUser.photoURL || null,
+          status: null,
+          chats: [],
+          contacts: [],
+        };
+        dispatch(setUser(userData));
+      } else {
+        dispatch(setUser({} as Partial<UserState> & { uid: string })); // Clear user state if no user is logged in
+      }
     });
-    return () => unsubscribe();
-  }, []);
+
+    return () => unsubscribe(); // Cleanup subscription on unmount
+  }, [dispatch]);
 
   const handleLogin = async (
     email: string,
     password: string,
   ): Promise<FirebaseAuthTypes.UserCredential | void> => {
+    setLoading(true);
+    setError(null);
+
     try {
       const userCredential = await login(email, password);
-      const firebaseUser = userCredential?.user;
-
-      if (firebaseUser) {
-        const userData: Partial<UserState> & {uid: string} = {
-          uid: firebaseUser.uid,
-          displayName: firebaseUser.displayName || null,
-          email: firebaseUser.email || null,
-          photoURL: firebaseUser.photoURL || null,
-          status: null,
-          chats: [],
-          contacts: [],
-        };
-
-        dispatch(setUser(userData));
-      }
       if (userCredential) {
         return userCredential;
       } else {
-        ToastAndroid.show('Email or Password may invalid.', ToastAndroid.SHORT);
+        ToastAndroid.show('Email or Password may be invalid.', ToastAndroid.SHORT);
         console.error('User not created (useAuth.ts)... Error:', user);
       }
     } catch (err) {
@@ -68,21 +69,6 @@ const appAuth = (): UseAuthReturn => {
 
     try {
       const userCredential = await signUp(email, password, name);
-
-      const firebaseUser = userCredential?.user;
-
-      if (firebaseUser) {
-        const userData = {
-          uid: firebaseUser.uid,
-          displayName: name,
-          email: firebaseUser.email || '',
-          status: null,
-          photoURL: firebaseUser.photoURL || null,
-        };
-
-        dispatch(setUser(userData));
-      }
-
       if (userCredential) {
         return userCredential;
       } else {
@@ -119,8 +105,7 @@ const appAuth = (): UseAuthReturn => {
     handleSignUp,
     error,
     loading,
-    observeAuth: () => () => {},
   };
 };
 
-export default appAuth;
+export default useAuth;

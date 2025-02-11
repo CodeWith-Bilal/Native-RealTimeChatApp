@@ -2,7 +2,7 @@ import { useState } from 'react';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { ToastAndroid } from 'react-native';
 
-const appForgetPassword = () => {
+const useForgetPassword = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -21,8 +21,8 @@ const appForgetPassword = () => {
       showToast(
         'A password reset link has been sent to your email address.'
       );
-    } catch (error) {
-      const errorCode = (error as FirebaseAuthTypes.NativeFirebaseAuthError).code;
+    } catch (err) {
+      const errorCode = (err as FirebaseAuthTypes.NativeFirebaseAuthError).code;
 
       if (errorCode === 'auth/user-not-found') {
         showToast('No user found with this email address.');
@@ -37,4 +37,4 @@ const appForgetPassword = () => {
   return { email, setEmail, error, setError, handlePasswordReset };
 };
 
-export default appForgetPassword;
+export default useForgetPassword;

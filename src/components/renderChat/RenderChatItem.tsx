@@ -10,7 +10,7 @@ import appNavigate from '../../hooks/useNavigationHook';
 // import { getRelativeTime } from '../../constants/sideFunctions';
 import { COLOR } from '../../constants/colors';
 import ChatSwipeActions from './ChatSwipeActions';
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';
 import { getRelativeTime } from '../../constants/sideFucntions';
 
 interface RenderChatItemProps {
@@ -43,12 +43,12 @@ const RenderChatItem: React.FC<RenderChatItemProps> = ({ item }) => {
 
   const handleChatPress = async () => {
     // Check if there are unread messages
-    if (item.unreadMessages > 0) {
-      // Reset unread count for the current user
-      await firestore().collection('chats').doc(item.id).update({
-        [`unreadCount.${userId}`]: 0, // Corrected syntax
-      });
-    }
+    // if (item.unreadMessages > 0) {
+    //   // Reset unread count for the current user
+    //   await firestore().collection('chats').doc(item.id).update({
+    //     [`unreadCount.${userId}`]: 0, // Corrected syntax
+    //   });
+    // }
     navigation.navigate('Chat', {
       chatId: item?.id,
       participant: {
@@ -101,7 +101,7 @@ const RenderChatItem: React.FC<RenderChatItemProps> = ({ item }) => {
                 {lastActivityTime}
               </Text>
             )}
-            {item.unreadMessages > 0 && (
+            {/* {item.unreadMessages > 0 && (
               <Text
                 style={{
                   backgroundColor: COLOR.red,
@@ -112,7 +112,7 @@ const RenderChatItem: React.FC<RenderChatItemProps> = ({ item }) => {
                 }}>
                 {item.unreadMessages}
               </Text>
-            )}
+            )} */}
           </View>
         </View>
       </TouchableOpacity>

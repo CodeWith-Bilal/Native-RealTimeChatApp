@@ -33,19 +33,19 @@ const SignIn: React.FC = () => {
           title="Sign up with Email"
           subText="Get chatting with friends and family today by signing up for our chat
         app!"
-          styleSubTitle={{width: '80%'}}
+          styleSubTitle={{width: '80%'}} style={{marginBottom: 20}}
         />
 
-        <View style={{flex: 6, paddingHorizontal: 10, paddingVertical: 10}}>
-          <IconButton
+        <View style={{flex: 6, paddingHorizontal: 10, paddingVertical: 50}}>
+          {/* <IconButton
             src={Images.GoogleIcon}
             onPress={() => console.log("'Google Icon' on Sign Clicked")}
-          />
-          <View style={styles.gapVertical}>
+          /> */}
+          {/* <View style={styles.gapVertical}>
             <RulerText lineColor={COLOR.dark_gray} />
-          </View>
+          </View> */}
 
-          <View style={{gap: 25}}>
+          <View style={{gap: 30}}>
             <InputField
               val={userData.name}
               setVal={value => handleSignUpInputChange('name', value)}
@@ -85,7 +85,7 @@ const SignIn: React.FC = () => {
           </View>
         </View>
 
-        <View style={{flex: 2, marginTop: 20, paddingVertical: 10}}>
+        <View style={{flex: 2, marginTop: 30, paddingVertical: 10}}>
           <ActionButton
             onClick={signUpHandler}
             loader={loading}

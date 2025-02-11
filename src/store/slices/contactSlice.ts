@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import {User} from '../../types/firestoreService';
 import {RootState} from '../store';
-import fetchContacts from '../../hooks/useContacts';
+import { fetchContacts } from '../../hooks/useContacts';
 
 interface ContactsState {
   contacts: User[];
@@ -19,14 +19,14 @@ export const fetchContactsThunk = createAsyncThunk(
   'contacts/fetchContacts',
   async (userId: string, {dispatch, rejectWithValue}) => {
     try {
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<void>((resolve, _reject) => {
         const unsubscribe = fetchContacts(userId, contacts => {
-          dispatch(setContacts(contacts)); 
+          dispatch(setContacts(contacts));
           resolve();
         });
 
         return () => {
-          unsubscribe(); 
+          unsubscribe();
         };
       });
     } catch (error) {
@@ -67,10 +67,9 @@ const contactsSlice = createSlice({
         const isAlreadyContact = state.contacts.some(
           contact => contact.uid === action.payload?.uid,
         );
-        
+
         if (!isAlreadyContact) {
           state.contacts = [...state.contacts, action.payload];
-          console.log('Contacts =+> (contact.slice.ts)', state.contacts.map(c => c.displayName));
         } else {
           console.warn('User is already in contacts:', action.payload);
         }

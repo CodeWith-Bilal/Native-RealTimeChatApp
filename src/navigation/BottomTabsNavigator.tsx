@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../screens/home/Home';
 import ContactsScreen from '../screens/contacts/Contacts';
@@ -19,7 +19,15 @@ const BottomTabsNavigator = () => {
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
+          backgroundColor: '#fff',
         },
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: 'bold',
+        },
+        tabBarActiveTintColor: COLOR.primary,
+        tabBarInactiveTintColor: COLOR.gray,
         tabBarIcon: ({focused}) => {
           let iconSource;
 
@@ -39,11 +47,6 @@ const BottomTabsNavigator = () => {
 
           return <Image source={iconSource} style={styles.icon} />;
         },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: 'bold',
-          color: COLOR.light_grey,
-        },
       })}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Contacts" component={ContactsScreen} />
@@ -52,11 +55,11 @@ const BottomTabsNavigator = () => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   icon: {
     width: 24,
     height: 24,
   },
-};
+});
 
 export default BottomTabsNavigator;

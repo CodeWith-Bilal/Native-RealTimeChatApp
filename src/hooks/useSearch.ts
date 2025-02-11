@@ -1,42 +1,42 @@
-import { useState } from 'react';
-import { addContact } from './useContacts';
-import { addContact as addContactToStore } from '../store/slices/contactSlice';
-import { addUserToContact } from '../store/slices/userSlice';
-import useAuth from './useAuth';
-import { useAppDispatch, useAppSelector } from '../store/store';
-import { User } from '../types/firestoreService';
+import {useState} from 'react';
+import {addContact} from '../hooks/useContacts';
+import {addContact as addContactToStore} from '../store/slices/contactSlice';
+import {addUserToContact} from '../store/slices/userSlice';
+import useAuth from '../hooks/useAuth';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {User} from '../types/firestoreService';
+import { ToastAndroid } from 'react-native';
 
-const appSearch = () => {
+const useAppSearch = () => {
   const [searchText, setSearchText] = useState<string>('');
-  const { user } = useAuth();
+  const {user} = useAuth();
   const dispatch = useAppDispatch();
-  const usersInStore = useAppSelector(state => state.users.users);
+  const {users: usersInStore} = useAppSelector(state => state.users);
   const [filteredUsers, setFilteredUsers] = useState<User[]>(usersInStore);
-  const contacts = useAppSelector(state => state.contacts.contacts);
+  const {contacts} = useAppSelector(state => state.contacts);
 
   const handleSearch = (text: string) => {
     setSearchText(text);
 
-    const filtered = usersInStore.filter((user: User) =>
-      user.displayName?.toLowerCase().includes(text.toLowerCase()) ||
-      user.email?.toLowerCase().includes(text.toLowerCase())
-    );
+    const filtered = usersInStore.filter(
+      (u: User) =>
+        u.displayName?.toLowerCase().includes(text.toLowerCase()) ||
+        u.email?.toLowerCase().includes(text.toLowerCase()),
+    ).filter((u: User) => u.uid !== user?.uid);
 
     setFilteredUsers(filtered);
   };
 
   const handleAddContact = async (contactId: string) => {
-    if (!contactId) return;
-
     try {
-      dispatch(addContactToStore(contactId));
-      dispatch(addUserToContact(contactId));
-      await addContact(user?.uid || '', contactId);
-      console.log('%c Contact added successfully...', 'font-size:16px;color:green;');
+      if (contactId) {
+        dispatch(addContactToStore(contactId));
+        dispatch(addUserToContact(contactId));
+        await addContact(user?.uid || '', contactId);
+      }
     } catch (error) {
       console.error('Error adding contact:', error);
-    } finally {
-      console.log('Added via Store...', contacts.map(c => c?.displayName));
+      ToastAndroid.show('Failed to add contact', ToastAndroid.LONG);
     }
   };
 
@@ -50,4 +50,4 @@ const appSearch = () => {
   };
 };
 
-export default appSearch;
+export default useAppSearch;

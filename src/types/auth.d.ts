@@ -5,7 +5,7 @@ export interface UseAuthReturn {
   user: User | null;
   loading: boolean;
   error: string | null;
-  observeAuth: () => () => void;
+  // observeAuth: () => () => void;
   handleLogin: (
     email: string,
     password: string,

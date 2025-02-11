@@ -1,13 +1,9 @@
+
 import React from 'react';
-import {
-  ActivityIndicator,
-  Text,
-  TouchableOpacity,
-  ToastAndroid,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {ActivityIndicator, Text, ToastAndroid, TouchableOpacity} from 'react-native';
 import {ActionButtonProps} from '../../types/actionButton';
-import {COLOR} from '../../constants/colors';
+// import {showToast} from '../Toast';
+import { COLOR } from '../../constants/colors';
 
 const ButtonContent: React.FC<ActionButtonProps> = ({
   onClick,
@@ -16,43 +12,28 @@ const ButtonContent: React.FC<ActionButtonProps> = ({
   error = false,
 }) => {
   const handleClick = () => {
-    if (error) {
-      ToastAndroid.show(
-        typeof error === 'string' ? error : 'An unknown error occurred',
-        ToastAndroid.SHORT,
-      );
-    } else {
-      onClick();
-    }
+    error
+      ? ToastAndroid.show(
+          'Error',
+          ToastAndroid.LONG,
+        )
+      : onClick();
   };
-
   return (
     <TouchableOpacity
-      activeOpacity={0.5}
+      activeOpacity={0.9}
       onPress={handleClick}
       disabled={loader}
-      style={{
-        borderRadius: 8,
-      }}>
-      {loader ? (
-        
-          <ActivityIndicator color={COLOR.white} />
-
-      ) : (
-        <Text
-          style={{
-            fontSize: 18,
-            textAlign: 'center',
-            color: COLOR.white,
-            fontWeight: '600',
-            paddingVertical: 10,
-            paddingHorizontal: 10,
-            // backgroundColor: COLOR.blue,
-            borderRadius: 8,
-          }}>
-          {children}
-        </Text>
-      )}
+      >
+      <Text
+        style={{
+          fontSize: 18,
+          textAlign: 'center',
+          color: COLOR.white,
+          fontWeight: 600,
+        }}>
+        {!error && loader ? <ActivityIndicator color="#fff" /> : children}
+      </Text>
     </TouchableOpacity>
   );
 };

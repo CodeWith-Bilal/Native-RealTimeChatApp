@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import useAuth from './useAuth';
-import { fetchContactsThunk, setContactsLoading } from '../store/slices/contactSlice';
-import { User } from '../types/firestoreService';
+import {User} from '../types/firestoreService';
+import {useEffect, useState} from 'react';
+import useAuth from '../hooks/useAuth';
+import {fetchContactsThunk, setContactsLoading} from '../store/slices/contactSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 
 const useContacts = () => {
-  const [sections, setSections] = useState<{ title: string; data: User[] }[]>([]);
-  const { user } = useAuth();
+  const [sections, setSections] = useState<{title: string; data: User[]}[]>([]);
+  const {user} = useAuth();
   const dispatch = useAppDispatch();
-  const { contacts, error } = useAppSelector((state) => state.contacts);
+  const {contacts, error} = useAppSelector(state => state.contacts);
 
   useEffect(() => {
     if (user?.uid) {
       setContactsLoading(true);
-      dispatch(fetchContactsThunk(user.uid));
+      dispatch(fetchContactsThunk(user?.uid));
       setContactsLoading(false);
     }
   }, [user?.uid, dispatch]);
@@ -25,14 +25,16 @@ const useContacts = () => {
     }
   }, [contacts]);
 
-  return { contacts, sections, error, addContact, fetchContactsRealtime };
+  return {contacts, sections, error};
 };
 
 const groupContactsByAlphabet = (contacts: User[]) => {
-  const grouped: { [key: string]: User[] } = {};
+  const grouped: {[key: string]: User[]} = {};
 
-  contacts.forEach((contact) => {
-    const firstLetter = contact.displayName ? contact.displayName[0].toUpperCase() : '';
+  contacts.forEach(contact => {
+    const firstLetter = contact.displayName
+      ? contact?.displayName[0].toUpperCase()
+      : '';
     if (!grouped[firstLetter]) {
       grouped[firstLetter] = [];
     }
@@ -40,35 +42,35 @@ const groupContactsByAlphabet = (contacts: User[]) => {
   });
 
   const sections = Object.keys(grouped)
-    .sort()
-    .map((letter) => ({
+    ?.sort()
+    ?.map(letter => ({
       title: letter,
       data: grouped[letter],
     }));
 
   return sections;
 };
-
-export const fetchContactsRealtime = (
+export const fetchContacts = (
   userId: string,
-  callback: (contacts: User[]) => void
+  callback: (contacts: User[]) => void,
 ) => {
   const userDocRef = firestore().collection('users').doc(userId);
 
-  const unsubscribeUser = userDocRef.onSnapshot(async (userDoc) => {
-    const userData = userDoc.data();
-    const contactIds = userData?.contacts || [];
+  const unsubscribe = userDocRef.onSnapshot(
+    async userDoc => {
+      const userData = userDoc.data();
+      const contactIds = userData?.contacts || [];
 
-    if (contactIds.length === 0) {
-      callback([]);
-      return;
-    }
+      if (contactIds.length === 0) {
+        callback([]);
+        return;
+      }
 
-    const unsubscribeContacts = firestore()
+      const unsubscribeContacts = firestore()
       .collection('users')
       .where(firestore.FieldPath.documentId(), 'in', contactIds)
-      .onSnapshot((snapshot) => {
-        const contacts = snapshot.docs.map((doc) => {
+      .onSnapshot(snapshot => {
+        const contacts = snapshot.docs?.map(doc => {
           const data = doc.data();
           return {
             uid: doc.id,
@@ -82,12 +84,12 @@ export const fetchContactsRealtime = (
 
         callback(contacts);
       });
-
-    return unsubscribeContacts;
-  });
-
-  return () => unsubscribeUser();
-};
+    
+      return unsubscribeContacts;
+    });
+  
+    return () => unsubscribe();
+  };
 
 export const addContact = async (userId: string, contactId: string) => {
   try {
@@ -108,5 +110,6 @@ export const addContact = async (userId: string, contactId: string) => {
     console.error('Error adding contact:', error);
   }
 };
+
 
 export default useContacts;

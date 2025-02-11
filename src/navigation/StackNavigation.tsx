@@ -1,4 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import auth from '@react-native-firebase/auth'; // Import Firebase Auth
 import WelcomeScreen from '../screens/welcomescreen/WelcomeScreen';
 import SignInScreen from '../screens/authScreens/signin/SignIn';
 import SignUp from '../screens/authScreens/signup/SignUp';
@@ -9,30 +11,34 @@ import BottomTabsNavigator from './BottomTabsNavigator';
 import ChangePassword from '../screens/changePassword/ChangePassword';
 import ChatScreen from '../screens/chat/Chat';
 import ForgetPassword from '../screens/forgetPassword/ForgetPassword';
-import useNavigationHook from '../hooks/useNavigationHook';
-import Loader from '../components/loader/Loader';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigation = () => {
-  const { user, isAuthChecked, userLoader } = useNavigationHook();
+  const [user, setUser] = useState<any>(null); // State to hold user data
+  const [isAuthChecked, setIsAuthChecked] = useState(false); // State to check if auth is checked
 
-  if (userLoader) {
-    return <Loader />;
-  }
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged((firebaseUser) => {
+      setUser(firebaseUser); // Set user data
+      setIsAuthChecked(true); // Mark auth check as complete
+    });
+
+    return () => unsubscribe(); // Cleanup subscription on unmount
+  }, []);
 
   return isAuthChecked ? (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={user?.uid ? "MainTabs" : "WelcomeScreen"}>
+      initialRouteName={user?.uid ? 'MainTabs' : 'WelcomeScreen'}>
       {user?.uid ? (
         <>
+          <Stack.Screen name="MainTabs" component={BottomTabsNavigator} />
           <Stack.Screen name="Search" component={Search} />
           <Stack.Screen name="Chat" component={ChatScreen} />
           <Stack.Screen name="Profile" component={Profile} />
-          <Stack.Screen name="MainTabs" component={BottomTabsNavigator} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
         </>
       ) : (
