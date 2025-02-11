@@ -6,13 +6,13 @@ import { FirebaseError } from '@firebase/util';
 import { User } from '../types/firestoreService';
 import {GOOGLE_CLIENT_ID} from '@env';
 
-// Google Sign-In configuration
+
 GoogleSignin.configure({
   webClientId: GOOGLE_CLIENT_ID,
   offlineAccess: true,
 });
 
-// Function to handle user data retrieval from Firestore
+
 const getUserDataFromFirestore = async (uid: string): Promise<User | null> => {
   try {
     const userDoc = await firestore().collection('users').doc(uid).get();
@@ -35,7 +35,7 @@ const getUserDataFromFirestore = async (uid: string): Promise<User | null> => {
   }
 };
 
-// Observe authentication state changes
+
 export const observeAuthState = (callback: (user: User | null) => void): (() => void) => {
   return auth().onAuthStateChanged(async (firebaseUser) => {
     if (firebaseUser) {
@@ -47,7 +47,7 @@ export const observeAuthState = (callback: (user: User | null) => void): (() => 
   });
 };
 
-// Login function
+
 export const login = async (email: string, password: string): Promise<FirebaseAuthTypes.UserCredential | null> => {
   try {
     const userCredential = await auth().signInWithEmailAndPassword(email, password);
@@ -60,7 +60,7 @@ export const login = async (email: string, password: string): Promise<FirebaseAu
   }
 };
 
-// Sign-up function
+
 export const signUp = async (email: string, password: string, name: string): Promise<FirebaseAuthTypes.UserCredential | null> => {
   try {
     const userCredential = await auth().createUserWithEmailAndPassword(email, password);
@@ -89,7 +89,7 @@ export const signUp = async (email: string, password: string, name: string): Pro
   }
 };
 
-// Google Sign-In function
+
 export const signInWithGoogle = async () => {
   try {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
@@ -132,7 +132,6 @@ export const logoutUser = async () => {
   }
 };
 
-// Handle authentication errors
 const handleAuthError = (error: any) => {
   const errorMessage = error instanceof FirebaseError ? mapFirebaseError(error.code) : 'An unexpected error occurred.';
   ToastAndroid.show(errorMessage, ToastAndroid.LONG);
