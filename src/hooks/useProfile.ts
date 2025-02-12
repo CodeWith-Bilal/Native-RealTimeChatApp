@@ -22,25 +22,26 @@ const useProfile = () => {
   useEffect(() => {
     const unsubscribe = firestore()
       .collection('users')
-      .doc(user.uid || '')
+      .doc(user.uid)
       .onSnapshot(doc => {
         if (doc.exists) {
           const userData = doc.data();
+          console.log('Fetched User Data:', userData); // Log fetched user data
           setUserData({
-            name: userData?.displayName || '',
-            email: userData?.email || '',
-            status: userData?.status || '',
-            imageUri: userData?.photoURL || '',
+            name: userData.displayName || '',
+            email: userData.email || '',
+            status: userData.status || '',
+            imageUri: userData.photoURL || '',
           });
-          dispatch(setUser({ ...userData, uid: user.uid || '' }));
+          dispatch(setUser({ ...userData, uid: user.uid }));
         }
       }, error => {
         console.error('Error fetching user data:', error);
       });
-
+  
     return () => unsubscribe(); // Cleanup the listener on unmount
   }, [user.uid, dispatch]);
-
+  
   const handleInputChange = (field: string, value: string | null) => {
     setUserData(prevState => ({ ...prevState, [field]: value }));
   };
@@ -93,9 +94,7 @@ const useProfile = () => {
         imageUri: imageDataUri,
       }));
 
-      if (user.uid) {
-        dispatch(setUser({ ...user, photoURL: imageDataUri, uid: user.uid }));
-      }
+      dispatch(setUser({ ...user, photoURL: imageDataUri, uid: user.uid }));
       setUpdateLoader(false);
     } catch (err) {
       console.error('Error handling image:', err);

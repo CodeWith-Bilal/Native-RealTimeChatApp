@@ -1,7 +1,7 @@
 import {useAppSelector} from '../../store/store';
 import appNavigate from '../../hooks/useNavigationHook';
 
-const appSettings = () => {
+const useSettings = () => {
   const user = useAppSelector(state => state.user);
 
   const {navigation} = appNavigate();
@@ -11,5 +11,5 @@ const appSettings = () => {
   };
 };
 
-export default appSettings;
+export default useSettings;
 

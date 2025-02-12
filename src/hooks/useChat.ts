@@ -6,7 +6,6 @@ import useAuth from './useAuth';
 import { Message, Chat } from '../types/firestoreService';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { fetchUser } from './useUser';
-// import { fetchUser } from './';
 
 const useChat = (chatId: string, participantUid: string) => {
   const dispatch = useAppDispatch();
@@ -36,7 +35,7 @@ const useChat = (chatId: string, participantUid: string) => {
   const handleSend = async () => {
     if (newMessage.trim()) {
       const message: Message = {
-        id: `${Date.now()}`,
+        id: `${Date.now()}`, // Ensure ID is a string
         senderId: user?.uid || '',
         text: newMessage,
         contentType: 'text',
@@ -62,7 +61,7 @@ const useChat = (chatId: string, participantUid: string) => {
 
 export const createNewChat = async (participants: string[]): Promise<string> => {
   const [user1, user2] = participants.sort();
-  const chatId = user1 + user2;
+  const chatId = user1 + user2; // Ensure consistent chat ID generation
   const chatRef = firestore().collection('chats').doc(chatId);
   const usersRef = firestore().collection('users');
 

@@ -49,6 +49,7 @@ const RenderChatItem: React.FC<RenderChatItemProps> = ({ item }) => {
     //     [`unreadCount.${userId}`]: 0, // Corrected syntax
     //   });
     // }
+    console.log('Chat item:', item.id);
     navigation.navigate('Chat', {
       chatId: item?.id,
       participant: {

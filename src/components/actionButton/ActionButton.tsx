@@ -21,7 +21,6 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       style={{
         padding: 14,
         borderRadius: 16,
-        width: '100%',
       }}
       colors={['#010102', '#192f6a', '#3b5998']}>
       <ButtonContent

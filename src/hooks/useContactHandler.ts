@@ -15,14 +15,23 @@ const useContactHandler = () => {
   };
 
   const handleContactClick = async (contactId: string, participant: userProfile) => {
-    if (!user?.uid) return;
+    if (!user?.uid) {
+      showToast('User not authenticated.');
+      return;
+    }
 
     try {
       setNewChatLoader(true);
-      const userChats = user.chats;
-      const existingChat = userChats?.find(chatId => chatId?.includes(contactId));
+      const userChats = user.chats || [];
+      console.log('User Chats:', userChats); // Debugging line
+      console.log('Contact ID:', contactId); // Debugging line
+
+      // Check if there is an existing chat with the contact
+      const existingChat = userChats.find(chatId => chatId === contactId);
+      console.log('Existing Chat:', existingChat); // Debugging line
 
       if (existingChat) {
+        // Navigate to existing chat
         navigation.navigate('Chat', {
           chatId: existingChat,
           participant: {
@@ -33,16 +42,21 @@ const useContactHandler = () => {
           },
         });
       } else {
+        // Create a new chat
         const chatId = await createNewChat([user.uid, contactId]);
-        navigation.navigate('Chat', {
-          chatId,
-          participant: {
-            uid: participant.uid,
-            displayName: participant.displayName,
-            photoURL: participant.photoURL || null,
-            status: participant.status,
-          },
-        });
+        if (chatId) {
+          navigation.navigate('Chat', {
+            chatId,
+            participant: {
+              uid: participant.uid,
+              displayName: participant.displayName,
+              photoURL: participant.photoURL || null,
+              status: participant.status,
+            },
+          });
+        } else {
+          showToast('Failed to create a new chat.');
+        }
       }
     } catch (error) {
       showToast('An error occurred while starting the chat.');
