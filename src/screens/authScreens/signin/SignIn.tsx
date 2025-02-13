@@ -14,11 +14,9 @@ import {ScrollView} from 'react-native-gesture-handler';
 import ActionButton from '../../../components/actionButton/ActionButton';
 import {COLOR} from '../../../constants/colors';
 import AuthHeaderSection from '../../../components/AuthSectionHeader';
-// import useSign from './useSignIn';
 import Images from '../../../constants/imgs';
 import Loader from '../../../components/loader/Loader';
 import useAuthFunctionality from '../../../hooks/useAuthFunctionality';
-// import useAuthFunctionality from '../../../hooks/useAuthService';
 
 const SignIn: React.FC = () => {
   const {

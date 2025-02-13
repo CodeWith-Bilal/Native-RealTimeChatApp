@@ -1,17 +1,11 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import IconButton from '../../../components/IconButton';
-import RulerText from '../../../components/RulerText';
+import { View} from 'react-native';
 import InputField from '../../../components/InputField';
 import {ScrollView} from 'react-native-gesture-handler';
 import ActionButton from '../../../components/actionButton/ActionButton';
 import AuthHeaderSection from '../../../components/AuthSectionHeader';
-import Images from '../../../constants/imgs';
-import {COLOR} from '../../../constants/colors';
 import Loader from '../../../components/loader/Loader';
 import useAuthFunctionality from '../../../hooks/useAuthFunctionality';
-// import useSignup from './useSignup';
-// import useAuthFunctionality from '../../../hooks/useAuthService';
 
 const SignIn: React.FC = () => {
   const {userData, handleSignUpInputChange, signUpHandler, loading, error, setError} =
@@ -37,14 +31,6 @@ const SignIn: React.FC = () => {
         />
 
         <View style={{flex: 6, paddingHorizontal: 10, paddingVertical: 50}}>
-          {/* <IconButton
-            src={Images.GoogleIcon}
-            onPress={() => console.log("'Google Icon' on Sign Clicked")}
-          /> */}
-          {/* <View style={styles.gapVertical}>
-            <RulerText lineColor={COLOR.dark_gray} />
-          </View> */}
-
           <View style={{gap: 30}}>
             <InputField
               val={userData.name}
@@ -100,17 +86,3 @@ const SignIn: React.FC = () => {
 };
 
 export default SignIn;
-
-const styles = StyleSheet.create({
-  ghostIcon: {
-    paddingVertical: 5,
-    width: 40,
-    height: 40,
-    borderRadius: '50%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    alignSelf: 'center',
-  },
-  gapVertical: {marginTop: 10},
-});

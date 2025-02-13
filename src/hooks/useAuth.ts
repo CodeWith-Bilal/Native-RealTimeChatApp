@@ -27,11 +27,11 @@ const useAuth = (): UseAuthReturn => {
         };
         dispatch(setUser(userData));
       } else {
-        dispatch(setUser({} as Partial<UserState> & { uid: string })); // Clear user state if no user is logged in
+        dispatch(setUser({} as Partial<UserState> & { uid: string }));
       }
     });
 
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, [dispatch]);
 
   const handleLogin = async (
