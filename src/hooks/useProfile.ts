@@ -26,7 +26,7 @@ const useProfile = () => {
       .onSnapshot(doc => {
         if (doc.exists) {
           const userData = doc.data();
-          console.log('Fetched User Data:', userData); // Log fetched user data
+          console.log('Fetched User Data:', userData);
           setUserData({
             name: userData.displayName || '',
             email: userData.email || '',
@@ -35,13 +35,13 @@ const useProfile = () => {
           });
           dispatch(setUser({ ...userData, uid: user.uid }));
         }
-      }, error => {
-        console.error('Error fetching user data:', error);
+      }, err => {
+        console.error('Error fetching user data:', err);
       });
-  
-    return () => unsubscribe(); // Cleanup the listener on unmount
+
+    return () => unsubscribe();
   }, [user.uid, dispatch]);
-  
+
   const handleInputChange = (field: string, value: string | null) => {
     setUserData(prevState => ({ ...prevState, [field]: value }));
   };
@@ -114,7 +114,6 @@ const useProfile = () => {
         throw new Error('User ID is not available');
       }
 
-      // Update the Redux store with the new user data
       dispatch(
         setUser({
           uid: userId,
@@ -124,7 +123,6 @@ const useProfile = () => {
         }),
       );
 
-      // Update Firestore
       await firestore().collection('users').doc(userId).set({
         displayName: userData.name || '',
         email: userData.email || '',
