@@ -23,15 +23,13 @@ const useContactHandler = () => {
     try {
       setNewChatLoader(true);
       const userChats = user.chats || [];
-      console.log('User Chats:', userChats); // Debugging line
-      console.log('Contact ID:', contactId); // Debugging line
+      console.log('User Chats:', userChats);
+      console.log('Contact ID:', contactId);
 
-      // Check if there is an existing chat with the contact
       const existingChat = userChats.find(chatId => chatId === contactId);
-      console.log('Existing Chat:', existingChat); // Debugging line
+      console.log('Existing Chat:', existingChat);
 
       if (existingChat) {
-        // Navigate to existing chat
         navigation.navigate('Chat', {
           chatId: existingChat,
           participant: {
@@ -42,7 +40,6 @@ const useContactHandler = () => {
           },
         });
       } else {
-        // Create a new chat
         const chatId = await createNewChat([user.uid, contactId]);
         if (chatId) {
           navigation.navigate('Chat', {
