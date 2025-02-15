@@ -2,7 +2,6 @@
 import React from 'react';
 import {ActivityIndicator, Text, ToastAndroid, TouchableOpacity} from 'react-native';
 import {ActionButtonProps} from '../../types/actionButton';
-// import {showToast} from '../Toast';
 import { COLOR } from '../../constants/colors';
 
 const ButtonContent: React.FC<ActionButtonProps> = ({

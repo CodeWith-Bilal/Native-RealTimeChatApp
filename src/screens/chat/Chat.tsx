@@ -20,7 +20,7 @@ const ChatScreen: React.FC<ChatProps> = ({ route }) => {
     const markMessagesAsRead = async () => {
       if (participant.uid && messages.length > 0) {
         await firestore().collection('chats').doc(chatId).update({
-          [`unreadCount.${user?.uid}`]: 0, // Reset unread count for the current user
+          [`unreadCount.${user?.uid}`]: 0,
         });
       }
     };
@@ -36,7 +36,7 @@ const ChatScreen: React.FC<ChatProps> = ({ route }) => {
         status={participant.status}
       />
       <FlatList
-        data={messages} // Create a new array and reverse it
+        data={messages}
         style={{ gap: 5, padding: 10 }}
         renderItem={({ item, index }) => (
           <MessageBubble
@@ -48,10 +48,10 @@ const ChatScreen: React.FC<ChatProps> = ({ route }) => {
             timestamp={
               item.timestamp
                 ? item.timestamp instanceof Timestamp
-                  ? item.timestamp.toDate().toLocaleString() // Convert Firestore Timestamp to Date
+                  ? item.timestamp.toDate().toLocaleString()
                   : typeof item.timestamp === 'string'
-                  ? new Date(item.timestamp).toLocaleString() // Convert string timestamp
-                  : null // Handle unexpected cases
+                  ? new Date(item.timestamp).toLocaleString()
+                  : null
                 : null
             }
             previousMessage={messages[index - 1] || null}

@@ -33,7 +33,7 @@ function InputField({
         placeholderTextColor={COLOR.gray}
         value={val}
         secureTextEntry={secureTextEntry}
-        onChangeText={text => setVal(text)} // Directly set the value
+        onChangeText={text => setVal(text)}
         keyboardType={type}
         autoCapitalize="none"
       />

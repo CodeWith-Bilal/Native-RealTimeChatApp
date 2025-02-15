@@ -1,4 +1,3 @@
-// components/RenderChatItem.tsx
 
 import React, { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
@@ -7,10 +6,8 @@ import { User } from '../../types/firestoreService';
 import { useAppSelector } from '../../store/store';
 import { ChatNavigatorStyles } from '../../styles/chatComponents/navigator';
 import appNavigate from '../../hooks/useNavigationHook';
-// import { getRelativeTime } from '../../constants/sideFunctions';
 import { COLOR } from '../../constants/colors';
 import ChatSwipeActions from './ChatSwipeActions';
-// import firestore from '@react-native-firebase/firestore';
 import { getRelativeTime } from '../../constants/sideFucntions';
 
 interface RenderChatItemProps {
@@ -42,13 +39,6 @@ const RenderChatItem: React.FC<RenderChatItemProps> = ({ item }) => {
   const participantName = participant?.displayName || 'Unknown';
 
   const handleChatPress = async () => {
-    // Check if there are unread messages
-    // if (item.unreadMessages > 0) {
-    //   // Reset unread count for the current user
-    //   await firestore().collection('chats').doc(item.id).update({
-    //     [`unreadCount.${userId}`]: 0, // Corrected syntax
-    //   });
-    // }
     console.log('Chat item:', item.id);
     navigation.navigate('Chat', {
       chatId: item?.id,
@@ -60,7 +50,7 @@ const RenderChatItem: React.FC<RenderChatItemProps> = ({ item }) => {
       },
     });
   };
-  
+
 
   return (
     <Swipeable
@@ -102,18 +92,6 @@ const RenderChatItem: React.FC<RenderChatItemProps> = ({ item }) => {
                 {lastActivityTime}
               </Text>
             )}
-            {/* {item.unreadMessages > 0 && (
-              <Text
-                style={{
-                  backgroundColor: COLOR.red,
-                  paddingHorizontal: 8,
-                  paddingVertical: 2,
-                  borderRadius: 20,
-                  color: '#fff',
-                }}>
-                {item.unreadMessages}
-              </Text>
-            )} */}
           </View>
         </View>
       </TouchableOpacity>

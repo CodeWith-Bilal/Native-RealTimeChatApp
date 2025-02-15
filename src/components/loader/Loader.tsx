@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {
   Animated,
-  // Dimensions,
   StyleSheet,
   View,
   ActivityIndicator,
@@ -17,7 +16,6 @@ const Loader: React.FC = ({
 }) => {
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
-  // Rotation animation
   useEffect(() => {
     const spin = Animated.loop(
       Animated.timing(rotateAnim, {
