@@ -8,7 +8,7 @@ import RenderChatItem from '../../components/renderChat/RenderChatItem';
 
 const HomeScreen = () => {
   const { chats, chatLoader } = useHome();
-  console.log('Chats in HomeScreen:', chats); // Log chats
+  console.log('Chats in HomeScreen:', chats);
 
   return (
     <ContentViewer title="Home">
@@ -18,7 +18,7 @@ const HomeScreen = () => {
         ) : (
           <FlatList
             data={Object.values(chats)}
-            keyExtractor={item => item.id} // Ensure unique key
+            keyExtractor={item => item.id}
             renderItem={({ item }) => (
               <RenderChatItem item={item} />
             )}

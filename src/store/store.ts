@@ -9,22 +9,13 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage, // 🔥 Store data in AsyncStorage
+  storage: AsyncStorage,
 };
-const persistedUserReducer = persistReducer(persistConfig, userReducer);
-
-// const rootReducer = combineReducers({
-//   user: userReducer,
-//   chat: chatReducer,
-//   contacts: contactsReducer,
-//   users: usersReducer,
-// });
-
-// const persistedReducer = persistReducer(persistConfig, rootReducer);
+ persistReducer(persistConfig, userReducer);
 
 export const store = configureStore({
   reducer: {
-    user: userReducer, // 🔥 Persist user data
+    user: userReducer,
     chat: chatReducer,
     contacts: contactsReducer,
     users: usersReducer,
@@ -35,7 +26,6 @@ export const store = configureStore({
     }),
 });
 
-// export const persistor = persistStore(store);
 export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;

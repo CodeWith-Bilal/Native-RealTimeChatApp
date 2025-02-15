@@ -32,11 +32,10 @@ const Profile: React.FC = () => {
     logoutLoader,
   } = useProfile();
 
-  // Re-fetch user data when the Profile screen is focused
   useFocusEffect(
     React.useCallback(() => {
       if (userData.uid) {
-        dispatch(fetchUserData(userData.uid)); // Fetch user data
+        dispatch(fetchUserData(userData.uid));
       }
     }, [dispatch, userData.uid])
   );
