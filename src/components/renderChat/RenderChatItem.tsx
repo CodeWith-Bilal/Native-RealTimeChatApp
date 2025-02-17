@@ -39,7 +39,6 @@ const RenderChatItem: React.FC<RenderChatItemProps> = ({ item }) => {
   const participantName = participant?.displayName || 'Unknown';
 
   const handleChatPress = async () => {
-    console.log('Chat item:', item.id);
     navigation.navigate('Chat', {
       chatId: item?.id,
       participant: {

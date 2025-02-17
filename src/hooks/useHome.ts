@@ -24,7 +24,6 @@ const useHome = () => {
 
         dispatch(setChats(chatMap));
       } catch (error) {
-        console.error('Error fetching chats:', error);
       } finally {
         setChatLoader(false);
       }

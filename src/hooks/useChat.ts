@@ -19,7 +19,6 @@ const useChat = (chatId: string, participantUid: string) => {
         const fetchedMessages = await fetchMessages(chatId);
         dispatch({ type: 'chat/setMessages', payload: { chatId, messages: fetchedMessages } });
       } catch (error) {
-        console.error('Error fetching messages:', error);
       }
     };
     loadMessages();
@@ -51,7 +50,6 @@ const useChat = (chatId: string, participantUid: string) => {
           await sendMessage(participantUid, user?.uid, message);
         }
       } catch (error) {
-        console.error('Error sending message:', error);
       }
     }
   };
@@ -61,7 +59,7 @@ const useChat = (chatId: string, participantUid: string) => {
 
 export const createNewChat = async (participants: string[]): Promise<string> => {
   const [user1, user2] = participants.sort();
-  const chatId = user1 + user2; 
+  const chatId = user1 + user2;
   const chatRef = firestore().collection('chats').doc(chatId);
   const usersRef = firestore().collection('users');
 
@@ -84,7 +82,6 @@ export const createNewChat = async (participants: string[]): Promise<string> => 
     }
     return chatId;
   } catch (error) {
-    console.error('Error creating chat:', error);
     throw error;
   }
 };
@@ -103,7 +100,6 @@ export const fetchChats = (userId: string, callback: (chats: Chat[]) => void) =>
               const user = await fetchUser(participantId);
               return { uid: participantId, ...user };
             } catch (error) {
-              console.error(`Error fetching user ${participantId}:`, error);
               return { uid: participantId, name: 'Unknown', createdAt: '', email: '', status: '' };
             }
           })
@@ -119,8 +115,7 @@ export const fetchChats = (userId: string, callback: (chats: Chat[]) => void) =>
         };
       }));
       callback(chats);
-    }, error => {
-      console.error('Error fetching chats:', error);
+    }, () => {
       callback([]);
     });
 
@@ -152,8 +147,7 @@ export const listenToChats = (userId: string, callback: (chats: Chat[]) => void)
         };
       }));
       callback(chats);
-    }, error => {
-      console.error('Error listening to chats:', error);
+    }, () => {
       callback([]);
     });
 };
@@ -172,9 +166,7 @@ export const deleteChat = async (chatId: string, participants: string[]) => {
         chats: firestore.FieldValue.arrayRemove(chatId),
       }),
     ));
-    console.log(`Chat ${chatId} deleted successfully`);
   } catch (error) {
-    console.error('Error deleting chat:', error);
     throw error;
   }
 };

@@ -26,7 +26,6 @@ const useProfile = () => {
       .onSnapshot(doc => {
         if (doc.exists) {
           const userData = doc.data();
-          console.log('Fetched User Data:', userData);
           setUserData({
             name: userData.displayName || '',
             email: userData.email || '',
@@ -35,8 +34,7 @@ const useProfile = () => {
           });
           dispatch(setUser({ ...userData, uid: user.uid }));
         }
-      }, err => {
-        console.error('Error fetching user data:', err);
+      }, () => {
       });
 
     return () => unsubscribe();
@@ -97,7 +95,6 @@ const useProfile = () => {
       dispatch(setUser({ ...user, photoURL: imageDataUri, uid: user.uid }));
       setUpdateLoader(false);
     } catch (err) {
-      console.error('Error handling image:', err);
       showToast('Failed to upload image');
     } finally {
       setLoading(false);
@@ -131,7 +128,6 @@ const useProfile = () => {
 
       showToast('Profile updated successfully');
     } catch (err) {
-      console.error('Failed to update profile:', err);
       showToast('Failed to update profile. Please try again later.');
     } finally {
       setUpdateLoader(false);
@@ -145,7 +141,6 @@ const useProfile = () => {
       dispatch(clearUser());
       showToast('Logged out successfully');
     } catch (err) {
-      console.error('Failed to logout:', err);
       showToast('Failed to logout');
     } finally {
       setLogoutLoader(false);

@@ -8,8 +8,6 @@ import RenderChatItem from '../../components/renderChat/RenderChatItem';
 
 const HomeScreen = () => {
   const { chats, chatLoader } = useHome();
-  console.log('Chats in HomeScreen:', chats);
-
   return (
     <ContentViewer title="Home">
       <View style={HomeStyles.content}>

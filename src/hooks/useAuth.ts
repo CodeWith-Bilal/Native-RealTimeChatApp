@@ -47,13 +47,11 @@ const useAuth = (): UseAuthReturn => {
         return userCredential;
       } else {
         ToastAndroid.show('Email or Password may be invalid.', ToastAndroid.SHORT);
-        console.error('User not created (useAuth.ts)... Error:', user);
       }
     } catch (err) {
       if (err instanceof FirebaseError) {
         setError(mapFirebaseError(err.code));
       }
-      console.error('Login Error:', err);
     } finally {
       setLoading(false);
     }
@@ -72,13 +70,11 @@ const useAuth = (): UseAuthReturn => {
       if (userCredential) {
         return userCredential;
       } else {
-        console.error('User not created (useAuth.ts)... Error:', user);
       }
     } catch (err) {
       if (err instanceof FirebaseError) {
         setError(mapFirebaseError(err.code));
       }
-      console.error('Sign-Up Error:', err);
     } finally {
       setLoading(false);
     }

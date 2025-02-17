@@ -16,13 +16,11 @@ const getUserDataFromFirestore = async (uid: string): Promise<User | null> => {
     const userDoc = await firestore().collection('users').doc(uid).get();
 
     if (!userDoc.exists) {
-      console.error(`User document for UID: ${uid} not found.`);
       return null;
     }
 
     const userData = userDoc.data();
     if (!userData) {
-      console.error(`User data is empty for UID: ${uid}`);
       return null;
     }
 
@@ -36,7 +34,6 @@ const getUserDataFromFirestore = async (uid: string): Promise<User | null> => {
       contacts: userData.contacts || [],
     };
   } catch (error) {
-    console.error('Error retrieving user data:', error);
     return null;
   }
 };
@@ -137,7 +134,6 @@ export const logoutUser = async () => {
     await auth().signOut();
     ToastAndroid.show('Logged out successfully! 🙂', ToastAndroid.SHORT);
   } catch (error) {
-    console.error('Logout error:', error);
     ToastAndroid.show('Failed to log out. Please try again.', ToastAndroid.SHORT);
   }
 };
@@ -145,7 +141,6 @@ export const logoutUser = async () => {
 const handleAuthError = (error: any) => {
   const errorMessage = error instanceof FirebaseError ? mapFirebaseError(error.code) : 'An unexpected error occurred.';
   ToastAndroid.show(errorMessage, ToastAndroid.LONG);
-  console.error('Auth error:', error);
 };
 
 const mapFirebaseError = (errorCode: string): string => {

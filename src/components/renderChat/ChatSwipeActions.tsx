@@ -39,7 +39,6 @@ const ChatSwipeActions: React.FC<ChatSwipeActionsProps> = ({
       await dispatch(deleteChatFromFirebase(item.id, item.participants));
       ToastAndroid.show('Chat deleted successfully.', ToastAndroid.SHORT);
     } catch (error) {
-      console.error('Failed to delete chat:', error);
       ToastAndroid.show('Failed to delete chat.', ToastAndroid.SHORT);
     } finally {
       setDeleteClicked(false);

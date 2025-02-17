@@ -50,8 +50,7 @@ export const listenToUsers = (
 
         callback(users);
       },
-      error => {
-        console.error('Error listening to users:', error);
+      () => {
         callback([]);
       },
     );
@@ -103,7 +102,6 @@ export const getCurrentUserProfile = async () => {
       throw new Error('No user is currently signed in.');
     }
   } catch (error) {
-    console.error('Failed to get user profile from Firebase:', error);
     throw error;
   }
 };

@@ -107,7 +107,6 @@ export const addContact = async (userId: string, contactId: string) => {
         contacts: firestore.FieldValue.arrayUnion(userId),
       });
   } catch (error) {
-    console.error('Error adding contact:', error);
   }
 };
 

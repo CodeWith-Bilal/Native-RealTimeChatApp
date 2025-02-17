@@ -59,7 +59,6 @@ const useChangePassword = () => {
         const errorMessage = errorMessages[error.code] || 'Failed to update the password. Please try again.';
         showToast(errorMessage);
       } else {
-        console.error('Unexpected error:', error);
         showToast('An unexpected error occurred.');
       }
     }

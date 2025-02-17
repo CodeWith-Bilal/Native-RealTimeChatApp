@@ -23,11 +23,8 @@ const useContactHandler = () => {
     try {
       setNewChatLoader(true);
       const userChats = user.chats || [];
-      console.log('User Chats:', userChats);
-      console.log('Contact ID:', contactId);
 
       const existingChat = userChats.find(chatId => chatId === contactId);
-      console.log('Existing Chat:', existingChat);
 
       if (existingChat) {
         navigation.navigate('Chat', {
@@ -57,7 +54,6 @@ const useContactHandler = () => {
       }
     } catch (error) {
       showToast('An error occurred while starting the chat.');
-      console.error('Error starting or navigating to chat:', error);
     } finally {
       setNewChatLoader(false);
     }

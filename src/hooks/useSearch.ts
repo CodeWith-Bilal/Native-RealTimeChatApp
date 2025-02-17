@@ -35,7 +35,6 @@ const useAppSearch = () => {
         await addContact(user?.uid || '', contactId);
       }
     } catch (error) {
-      console.error('Error adding contact:', error);
       ToastAndroid.show('Failed to add contact', ToastAndroid.LONG);
     }
   };

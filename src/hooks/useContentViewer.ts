@@ -13,12 +13,7 @@ const useContentViewer = () => {
       navigation.navigate('Search');
     } else if (route.name === 'Contacts') {
       try {
-        console.log('Added Contact... Clicked (ContentViewer.tsx)');
       } catch (error) {
-        console.error(
-          'Got error while Added Contact (ContentViewer.tsx)',
-          error,
-        );
       }
     } else {
       navigation.goBack();

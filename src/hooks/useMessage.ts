@@ -31,7 +31,6 @@ export const sendMessage = async (
       [`unreadCount.${receiverId}`]: firestore.FieldValue.increment(1),
     });
   } catch (error) {
-    console.error('Error sending message:', error);
     throw error;
   }
 };
@@ -82,7 +81,6 @@ export const listenToMessages = (
         callback(messages);
       },
       error => {
-        console.error('Error listening to messages:', error);
         callback([]);
       },
     );
